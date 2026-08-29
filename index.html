@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wortuhr Firmware-Update</title>
+<script type="module" src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"></script>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f7f6f2;
+    --card: #ffffff;
+    --text: #1c1c1c;
+    --muted: #5a5a5a;
+    --accent: #b3541e;
+    --accent-dark: #8a3f14;
+    --border: #e4e0d8;
+    --ok-bg: #eef6ec;
+    --ok-border: #bfdcb4;
+    --warn-bg: #fdf3e3;
+    --warn-border: #eccf98;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #17161a;
+      --card: #221f24;
+      --text: #ece8e2;
+      --muted: #b3aca2;
+      --accent: #e2864a;
+      --accent-dark: #f0a06a;
+      --border: #38333a;
+      --ok-bg: #1e2b1c;
+      --ok-border: #3a5230;
+      --warn-bg: #332a17;
+      --warn-border: #6b551f;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.55;
+  }
+  .wrap {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 40px 20px 70px;
+  }
+  h1 {
+    font-size: 1.6rem;
+    margin: 0 0 4px;
+  }
+  .subtitle {
+    color: var(--muted);
+    margin: 0 0 28px;
+    font-size: 0.95rem;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px 24px;
+    margin-bottom: 20px;
+  }
+  .card h2 {
+    font-size: 1.05rem;
+    margin: 0 0 10px;
+  }
+  ul, ol { padding-left: 1.2em; margin: 8px 0; }
+  li { margin: 4px 0; }
+  code {
+    background: var(--border);
+    padding: 1px 6px;
+    border-radius: 5px;
+    font-size: 0.9em;
+  }
+  .fixes li b { color: var(--accent-dark); }
+  .install-box {
+    text-align: center;
+    padding: 30px 24px;
+  }
+  esp-web-install-button {
+    --esp-tools-button-color: #fff;
+    --esp-tools-button-bg-color: var(--accent);
+  }
+  .browser-note {
+    background: var(--warn-bg);
+    border: 1px solid var(--warn-border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 0.9rem;
+    margin-top: 16px;
+  }
+  .safe-note {
+    background: var(--ok-bg);
+    border: 1px solid var(--ok-border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 0.9rem;
+  }
+  footer {
+    color: var(--muted);
+    font-size: 0.82rem;
+    margin-top: 32px;
+    border-top: 1px solid var(--border);
+    padding-top: 18px;
+  }
+  footer a { color: var(--accent-dark); }
+  a { color: var(--accent-dark); }
+  .unsupported {
+    display: none;
+  }
+  body.unsupported-browser .supported-only { display: none; }
+  body.unsupported-browser .unsupported { display: block; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>🕐 Wortuhr Firmware-Update</h1>
+  <p class="subtitle">Browser-basiertes Update für bereits gebaute Wortuhren – ganz ohne Arduino IDE.</p>
+
+  <div class="card">
+    <h2>Was ist neu in diesem Update?</h2>
+    <ul class="fixes">
+      <li><b>Zeitzone:</b> „Automatische Zeitzone“ lässt sich jetzt korrekt deaktivieren und speichern.</li>
+      <li><b>Web-Interface:</b> die Einstellungsseite lädt nach dem Speichern zuverlässig, ohne dass ein Neustart der Uhr nötig ist.</li>
+      <li><b>Farbe &amp; Helligkeit:</b> Änderungen erscheinen sofort auf der Uhr statt erst nach 1–2 Minuten.</li>
+    </ul>
+  </div>
+
+  <div class="card supported-only">
+    <h2>Was du brauchst</h2>
+    <ol>
+      <li>Den Browser <b>Google Chrome</b> oder <b>Microsoft Edge</b> am Computer (Windows, macOS oder Linux). Firefox und Safari funktionieren wegen fehlender Web-Serial-Unterstützung nicht.</li>
+      <li>Ein USB-Kabel, mit dem du deine Wortuhr (Wemos&nbsp;D1&nbsp;mini) an den Computer anschließt.</li>
+    </ol>
+    <div class="safe-note">
+      Deine WLAN-Zugangsdaten, Farbwahl und sonstigen Einstellungen bleiben beim normalen Update erhalten. Nur bei explizitem „Erase device“ im Installer-Dialog wird der komplette Speicher gelöscht – das ist für dieses Update nicht nötig.
+    </div>
+  </div>
+
+  <div class="card install-box supported-only">
+    <h2 style="margin-bottom:18px;">Update installieren</h2>
+    <esp-web-install-button manifest="manifest.json"></esp-web-install-button>
+    <div class="browser-note">
+      Klicke auf „Connect“, wähle im Popup deiner Wortuhr entsprechenden seriellen Port aus (meist „USB Serial“ oder „CH340“) und folge den Anweisungen. Der Vorgang dauert etwa eine Minute.
+    </div>
+  </div>
+
+  <div class="card unsupported">
+    <h2>Dein Browser wird nicht unterstützt</h2>
+    <p>Für das Firmware-Update über den Browser wird die <b>Web Serial API</b> benötigt. Diese steht aktuell nur in Chromium-basierten Browsern zur Verfügung.</p>
+    <p>Bitte öffne diese Seite in <b>Google Chrome</b> oder <b>Microsoft Edge</b> auf einem Windows-, macOS- oder Linux-Computer (kein Smartphone, kein iPad).</p>
+  </div>
+
+  <div class="card">
+    <h2>Herkunft &amp; Lizenz</h2>
+    <p>
+      Diese Firmware basiert auf dem quelloffenen
+      <a href="https://github.com/panbachi/wordclock" target="_blank" rel="noopener">Wordclock-Projekt von panbachi</a>
+      (<a href="https://www.panbachi.de" target="_blank" rel="noopener">panbachi.de</a>), lizenziert unter der
+      <a href="LICENSE">MIT-Lizenz</a>. Sie wurde um eine E-Mail-Funktion erweitert und enthält die oben genannten Bugfixes.
+      Der Quellcode kann auf Anfrage zur Verfügung gestellt werden.
+    </p>
+  </div>
+
+  <footer>
+    Bereitgestellt ohne Gewähr – bitte lies dir die Hinweise oben vor der Installation durch.
+    Basierend auf <a href="https://github.com/panbachi/wordclock" target="_blank" rel="noopener">panbachi/wordclock</a> (MIT License, © 2018 panbachi).
+  </footer>
+
+</div>
+
+<script>
+  if (!('serial' in navigator)) {
+    document.body.classList.add('unsupported-browser');
+  }
+</script>
+</body>
+</html>
